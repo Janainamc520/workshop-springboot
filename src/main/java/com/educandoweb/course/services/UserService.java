@@ -25,4 +25,10 @@ public class UserService {
 		return obj.get();
 	}
 	
+	// inserir no banco de dados
+	public User insert(User obj) {
+		
+		return repository.save(obj);
+	}
+	
 }
