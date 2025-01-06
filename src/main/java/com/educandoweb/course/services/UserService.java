@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.DatabaseException;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 
@@ -32,8 +33,13 @@ public class UserService {
 		return repository.save(obj);
 	}
 	
-	public void delete(Long id) {
-		repository.deleteById(id);
+	public void delete(Long id){
+	    try {
+	        if(!repository.existsById(id)) throw new ResourceNotFoundException(id);
+	        repository.deleteById(id);
+	    }catch (ResourceNotFoundException e){
+	        throw new DatabaseException(e.getMessage());
+	    }
 	}
 	
 	public User update(Long id, User obj) {
